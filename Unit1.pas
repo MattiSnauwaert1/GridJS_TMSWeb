@@ -26,6 +26,7 @@ implementation
 
 procedure TForm1.WebButton1Click(Sender: TObject);
 begin
+//start GridJS Code
   asm
     new gridjs.Grid({
     columns: ["Name", "Email", "Phone Number"],
