@@ -44341,7 +44341,20 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
     };
     this.WebButton1Click = function (Sender) {
       new gridjs.Grid({
-          columns: ["Name", "Email", "Phone Number"],
+          columns: [{name : 'Name',
+            attributes: (cell) => {
+                // add these attributes to the td elements only
+                if (cell) { 
+                  return {
+                    'data-cell-content': cell,
+                    'onclick': () => alert('Name of the person :' + cell),
+                    'style': 'cursor: pointer',
+                  };
+                }
+              } 
+          },
+           "Email", "Phone Number"
+          ],
       
           data: [
             ["John", "john@example.com", "(353) 01 222 3333"],
