@@ -10,7 +10,10 @@ type
   TForm1 = class(TWebForm)
     WebLabel1: TWebLabel;
     WebButton1: TWebButton;
+    WebButton2: TWebButton;
+    WebLabel2: TWebLabel;
     procedure WebButton1Click(Sender: TObject);
+    procedure WebButton2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -24,24 +27,59 @@ implementation
 
 {$R *.dfm}
 
+
+procedure TForm1.WebButton2Click(Sender: TObject);
+begin
+  asm
+    const opts = {
+      height: '30px',
+      showPoint: false,
+      fullWidth:true,
+      chartPadding: {top: 0,right: 0,bottom: 0,left: 0},
+      axisX: {showGrid: false, showLabel: false, offset: 0},
+      axisY: {showGrid: false, showLabel: false, offset: 0}
+  };
+new gridjs.Grid({
+  sort: true,
+  columns: [
+    'Symbol',
+    'Last price',
+    { 
+      name: 'Difference', 
+      formatter: (cell) => {
+        return gridjs.h('b', { style: {
+          'color': cell > 0 ? 'green' : 'red'
+        }}, cell);
+      
+    },    
+    }],
+  data: [
+    ['AAPL', 360.2, 20.19, [360, 363, 366, 361, 366, 350, 370]],
+    ['ETSY', 102.1, 8.22, [90, 91, 92, 90, 94, 95, 99, 102]],
+    ['AMZN', 2734.8, -30.01, [2779, 2786, 2792, 2780, 2750, 2765, 2740, 2734]],
+    ['TSLA', 960.85, -40.91, [993, 990, 985, 983, 970, 985, 988, 960]],
+  ]
+}).render(document.getElementById("stockGrid"));
+  end;  
+  WebButton2.Visible := false;
+  WebLabel2.Visible := false;
+end;
+
 procedure TForm1.WebButton1Click(Sender: TObject);
 begin
 //start GridJS
   asm
     new gridjs.Grid({
-    columns: [{name : 'Name',
-      attributes: (cell) => {
-          // add these attributes to the td elements only
-          if (cell) { 
-            return {
-              'data-cell-content': cell,
-              'onclick': () => alert('Name of the selected person : ' + cell),
-              'style': 'cursor: pointer',
-            };
-          }
-        } 
-    },
-     "Email", "Phone Number"
+    columns: ['Name' , 'Email', 'Phone Number',
+      { 
+        name: 'Actions',
+        formatter: (cell, row) => {
+          return gridjs.h('button', {
+            className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+            onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+          }, 'Edit');
+        }
+      },
     ],
 
     data: [
@@ -81,4 +119,4 @@ begin
   WebLabel1.Visible := false;
 end;
 
-end.
+end.   

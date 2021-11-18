@@ -44333,27 +44333,28 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       pas["WEBLib.Forms"].TForm.$init.call(this);
       this.WebLabel1 = null;
       this.WebButton1 = null;
+      this.WebButton2 = null;
+      this.WebLabel2 = null;
     };
     this.$final = function () {
       this.WebLabel1 = undefined;
       this.WebButton1 = undefined;
+      this.WebButton2 = undefined;
+      this.WebLabel2 = undefined;
       pas["WEBLib.Forms"].TForm.$final.call(this);
     };
     this.WebButton1Click = function (Sender) {
       new gridjs.Grid({
-          columns: [{name : 'Name',
-            attributes: (cell) => {
-                // add these attributes to the td elements only
-                if (cell) { 
-                  return {
-                    'data-cell-content': cell,
-                    'onclick': () => alert('Name of the person :' + cell),
-                    'style': 'cursor: pointer',
-                  };
-                }
-              } 
-          },
-           "Email", "Phone Number"
+          columns: ['Name' , 'Email', 'Phone Number',
+            { 
+              name: 'Actions',
+              formatter: (cell, row) => {
+                return gridjs.h('button', {
+                  className: 'py-2 mb-4 px-4 border rounded-md text-white bg-blue-600',
+                  onClick: () => alert(`Editing "${row.cells[0].data}" "${row.cells[1].data}"`)
+                }, 'Edit');
+              }
+            },
           ],
       
           data: [
@@ -44390,12 +44391,49 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
       this.WebButton1.SetVisible(false);
       this.WebLabel1.SetVisible(false);
     };
+    this.WebButton2Click = function (Sender) {
+      const opts = {
+            height: '30px',
+            showPoint: false,
+            fullWidth:true,
+            chartPadding: {top: 0,right: 0,bottom: 0,left: 0},
+            axisX: {showGrid: false, showLabel: false, offset: 0},
+            axisY: {showGrid: false, showLabel: false, offset: 0}
+        };
+      new gridjs.Grid({
+        sort: true,
+        columns: [
+          'Symbol',
+          'Last price',
+          { 
+            name: 'Difference', 
+            formatter: (cell) => {
+              return gridjs.h('b', { style: {
+                'color': cell > 0 ? 'green' : 'red'
+              }}, cell);
+            
+          },    
+          }],
+        data: [
+          ['AAPL', 360.2, 20.19, [360, 363, 366, 361, 366, 350, 370]],
+          ['ETSY', 102.1, 8.22, [90, 91, 92, 90, 94, 95, 99, 102]],
+          ['AMZN', 2734.8, -30.01, [2779, 2786, 2792, 2780, 2750, 2765, 2740, 2734]],
+          ['TSLA', 960.85, -40.91, [993, 990, 985, 983, 970, 985, 988, 960]],
+        ]
+      }).render(document.getElementById("stockGrid"));
+      this.WebButton2.SetVisible(false);
+      this.WebLabel2.SetVisible(false);
+    };
     this.LoadDFMValues = function () {
       pas["WEBLib.Forms"].TCustomForm.LoadDFMValues.call(this);
       this.WebLabel1 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebButton1 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.WebButton2 = pas["WEBLib.StdCtrls"].TButton.$create("Create$1",[this]);
+      this.WebLabel2 = pas["WEBLib.StdCtrls"].TLabel.$create("Create$1",[this]);
       this.WebLabel1.BeforeLoadDFMValues();
       this.WebButton1.BeforeLoadDFMValues();
+      this.WebButton2.BeforeLoadDFMValues();
+      this.WebLabel2.BeforeLoadDFMValues();
       try {
         this.SetName("Form1");
         this.SetColor(16777215);
@@ -44409,6 +44447,7 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.SetFormStyle(pas["WEBLib.Forms"].TFormStyle.fsNormal);
         this.SetHeight(480);
         this.SetLeft(0);
+        this.SetParentFont(false);
         this.SetTabOrder(0);
         this.SetTop(0);
         this.SetWidth(640);
@@ -44422,13 +44461,14 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebLabel1.FFont.SetSize(8);
         this.WebLabel1.FFont.SetStyle({});
         this.WebLabel1.SetHeight(12);
-        this.WebLabel1.SetLeft(92);
-        this.WebLabel1.SetTop(63);
+        this.WebLabel1.SetLeft(60);
+        this.WebLabel1.SetParentFont(false);
+        this.WebLabel1.SetTop(415);
         this.WebLabel1.SetWidth(154);
         this.WebButton1.SetParentComponent(this);
         this.WebButton1.SetName("WebButton1");
         this.WebButton1.SetCaption("Click Here");
-        this.WebButton1.SetColor(-1);
+        this.WebButton1.SetColor(16711680);
         this.WebButton1.SetDefault(false);
         this.WebButton1.FFont.FCharset = 0;
         this.WebButton1.FFont.SetColor(0);
@@ -44437,22 +44477,61 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
         this.WebButton1.FFont.SetSize(8);
         this.WebButton1.FFont.SetStyle({});
         this.WebButton1.SetHeight(25);
-        this.WebButton1.SetLeft(103);
+        this.WebButton1.SetLeft(71);
         this.SetEvent$1(this.WebButton1,this,"OnClick","WebButton1Click");
+        this.WebButton1.SetParentFont(false);
         this.WebButton1.SetRole("button");
         this.WebButton1.SetTabOrder(0);
-        this.WebButton1.SetTop(99);
+        this.WebButton1.SetTop(451);
         this.WebButton1.SetWidth(100);
+        this.WebButton2.SetParentComponent(this);
+        this.WebButton2.SetName("WebButton2");
+        this.WebButton2.SetCaption("Check");
+        this.WebButton2.SetColor(16711680);
+        this.WebButton2.SetDefault(false);
+        this.WebButton2.FFont.FCharset = 0;
+        this.WebButton2.FFont.SetColor(0);
+        this.WebButton2.FFont.SetHeight(0);
+        this.WebButton2.FFont.SetName("Arial");
+        this.WebButton2.FFont.SetSize(8);
+        this.WebButton2.FFont.SetStyle({});
+        this.WebButton2.SetHeight(25);
+        this.WebButton2.SetLeft(405);
+        this.SetEvent$1(this.WebButton2,this,"OnClick","WebButton2Click");
+        this.WebButton2.SetParentFont(false);
+        this.WebButton2.SetRole("button");
+        this.WebButton2.SetTabOrder(0);
+        this.WebButton2.SetTop(451);
+        this.WebButton2.SetWidth(100);
+        this.WebLabel2.SetParentComponent(this);
+        this.WebLabel2.SetName("WebLabel2");
+        this.WebLabel2.SetCaption("Check the Stock Market");
+        this.WebLabel2.FFont.FCharset = 0;
+        this.WebLabel2.FFont.SetColor(0);
+        this.WebLabel2.FFont.SetHeight(0);
+        this.WebLabel2.FFont.SetName("Arial");
+        this.WebLabel2.FFont.SetSize(8);
+        this.WebLabel2.FFont.SetStyle({});
+        this.WebLabel2.SetHeight(25);
+        this.WebLabel2.SetLeft(405);
+        this.WebLabel2.SetParentFont(false);
+        this.WebLabel2.SetTop(415);
+        this.WebLabel2.SetWidth(112);
       } finally {
         this.WebLabel1.AfterLoadDFMValues();
         this.WebButton1.AfterLoadDFMValues();
+        this.WebButton2.AfterLoadDFMValues();
+        this.WebLabel2.AfterLoadDFMValues();
       };
     };
     rtl.addIntf(this,pas.System.IUnknown);
     var $r = this.$rtti;
     $r.addField("WebLabel1",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
     $r.addField("WebButton1",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("WebButton2",pas["WEBLib.StdCtrls"].$rtti["TButton"]);
+    $r.addField("WebLabel2",pas["WEBLib.StdCtrls"].$rtti["TLabel"]);
     $r.addMethod("WebButton1Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
+    $r.addMethod("WebButton2Click",0,[["Sender",pas.System.$rtti["TObject"]]]);
   });
   this.Form1 = null;
 });
