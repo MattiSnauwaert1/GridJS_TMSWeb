@@ -44357,14 +44357,22 @@ rtl.module("Unit1",["System","SysUtils","Classes","JS","Web","WEBLib.Graphics","
               enabled: true
           },
           sort: true,
-          style: {
-              td: {
-                border: '1px solid #000'
-              },
-              table: {
-                'font-size': '15px'
-              }
+            style: {
+          table: {
+            'font-size': '15px',
+            border: '2px solid #ccc'
+          },
+          th: {
+            'background-color': 'rgba(0, 0, 0, 0.1)',
+             color: '#000',
+            'border-bottom': '1px solid #fff',
+            'text-align': 'center'
+          },
+          td: {
+            'text-align': 'center'
           }
+        }
+      
         }).render(document.getElementById("wrapper"));
       this.WebButton1.SetVisible(false);
       this.WebLabel1.SetVisible(false);
